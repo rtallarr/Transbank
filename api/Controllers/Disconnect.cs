@@ -7,14 +7,19 @@ namespace api.Controllers
     [ApiController]
     public class Disconnect : ControllerBase
     {
-        [HttpPost(Name = "Disconnect")]
+        [HttpPost]
         public IActionResult Post()
         {
             try
             {
-                POSAutoservicio.Instance.ClosePort();
-                //Console.WriteLine(POSAutoservicio.Instance.ClosePort());
-                return Ok("POS Disconnected");
+                Task<bool> pollResult = POSAutoservicio.Instance.Poll();
+                pollResult.Wait();
+                if (pollResult.Result)
+                {
+                    POSAutoservicio.Instance.ClosePort();
+                    return Ok("POS Disconnected");
+                }
+                return BadRequest("The port is closed");
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
