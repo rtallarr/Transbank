@@ -1,8 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Transbank.POSAutoservicio;
+using System.Text.Json;
 
 namespace api.Controllers
 {
+    public class connectionResponse
+    {
+        public bool success { get; set; }
+        public string details { get; set; }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class Connect : ControllerBase
@@ -19,25 +26,38 @@ namespace api.Controllers
             return ports.ToString();
         }
 
-        int baudrate = 19200;
-        string portName = "COM7";
-        string puertos = printCom();
+        string ports = printCom();
 
     [HttpPost(Name = "Connect")]
-        public IActionResult Post()
+        public IActionResult Post(string portName, int baudrate)
         {
+            var connectionResponse = new connectionResponse();
             try
             {
                 POSAutoservicio.Instance.OpenPort(portName, baudrate);
                 Task<bool> pollResult = POSAutoservicio.Instance.Poll();
                 pollResult.Wait();
+
+                connectionResponse.success = pollResult.Result;
+
                 if (pollResult.Result)
-                    return Ok("Pos Connected");
+                {
+                    connectionResponse.details = $"Succesfully opened port {portName}";
+                    string jsonString = JsonSerializer.Serialize(connectionResponse);
+                    return Ok(jsonString);
+                }
                 else
-                    return Ok("Pos NOT Connected");
+                {
+                    connectionResponse.details = $"Could not opened port {portName}";
+                    string jsonString = JsonSerializer.Serialize(connectionResponse);
+                    return BadRequest(jsonString);
+                }
             } catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                connectionResponse.success = false;
+                connectionResponse.details = ex.Message;
+                string jsonString = JsonSerializer.Serialize(connectionResponse);
+                return BadRequest(jsonString);
             }
         }
     }
