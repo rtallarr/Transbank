@@ -654,19 +654,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\rtall\\.nuget\\packages\\": {}
+    "C:\\Users\\Rodrigo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rtall\\source\\repos\\api\\api\\api.csproj",
+      "projectUniqueName": "C:\\Users\\Rodrigo\\Desktop\\Trabajo\\Keiron\\POS\\Transbank\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "C:\\Users\\rtall\\source\\repos\\api\\api\\api.csproj",
-      "packagesPath": "C:\\Users\\rtall\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rtall\\source\\repos\\api\\api\\obj\\",
+      "projectPath": "C:\\Users\\Rodrigo\\Desktop\\Trabajo\\Keiron\\POS\\Transbank\\api\\api.csproj",
+      "packagesPath": "C:\\Users\\Rodrigo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Rodrigo\\Desktop\\Trabajo\\Keiron\\POS\\Transbank\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\rtall\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Rodrigo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

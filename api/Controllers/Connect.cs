@@ -4,10 +4,10 @@ using System.Text.Json;
 
 namespace api.Controllers
 {
-    public class connectionResponse
+    class ConnectionResponse
     {
-        public bool success { get; set; }
-        public string details { get; set; }
+        public bool Success { get; set; }
+        public string? Details { get; set; }
     }
 
     [Route("api/[controller]")]
@@ -26,36 +26,36 @@ namespace api.Controllers
             return ports.ToString();
         }
 
-        string ports = printCom();
+        readonly string ports = printCom();
 
     [HttpPost(Name = "Connect")]
         public IActionResult Post(string portName, int baudrate)
         {
-            var connectionResponse = new connectionResponse();
+            var connectionResponse = new ConnectionResponse();
             try
             {
                 POSAutoservicio.Instance.OpenPort(portName, baudrate);
                 Task<bool> pollResult = POSAutoservicio.Instance.Poll();
                 pollResult.Wait();
 
-                connectionResponse.success = pollResult.Result;
+                connectionResponse.Success = pollResult.Result;
 
                 if (pollResult.Result)
                 {
-                    connectionResponse.details = $"Succesfully opened port {portName}";
+                    connectionResponse.Details = $"Succesfully opened port {portName}";
                     string jsonString = JsonSerializer.Serialize(connectionResponse);
                     return Ok(jsonString);
                 }
                 else
                 {
-                    connectionResponse.details = $"Could not opened port {portName}";
+                    connectionResponse.Details = $"Could not opened port {portName}";
                     string jsonString = JsonSerializer.Serialize(connectionResponse);
                     return BadRequest(jsonString);
                 }
             } catch (Exception ex)
             {
-                connectionResponse.success = false;
-                connectionResponse.details = ex.Message;
+                connectionResponse.Success = false;
+                connectionResponse.Details = ex.Message;
                 string jsonString = JsonSerializer.Serialize(connectionResponse);
                 return BadRequest(jsonString);
             }
